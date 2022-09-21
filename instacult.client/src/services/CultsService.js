@@ -16,6 +16,12 @@ class CultsService {
     AppState.activeCult = res.data
   }
 
+  async getCultists(id) {
+    const res = await api.get(`api/cults/${id}/members`)
+    logger.log('Cult Members', res.data)
+    AppState.cultists = res.data
+  }
+
   async create(cult) {
     const res = await api.post('/api/cults', cult)
     logger.log('Created Cult', res.data)

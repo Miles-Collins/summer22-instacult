@@ -14,10 +14,12 @@ namespace instacult.Controllers
   public class CultsController : ControllerBase
   {
     private readonly CultsService _cultsService;
+    private readonly CultMembersService _cultMembersService;
 
-    public CultsController(CultsService cultsService)
+    public CultsController(CultsService cultsService, CultMembersService cultMembersService)
     {
       _cultsService = cultsService;
+      _cultMembersService = cultMembersService;
     }
 
     [HttpGet]
@@ -41,6 +43,20 @@ namespace instacult.Controllers
       {
         Cult cult = _cultsService.GetOne(id);
         return Ok(cult);
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
+
+    [HttpGet("{id}/members")]
+    public ActionResult<List<Cultist>> GetCultists(int id)
+    {
+      try
+      {
+        List<Cultist> cultists = _cultMembersService.GetCultists(id);
+        return Ok(cultists);
       }
       catch (Exception e)
       {

@@ -36,7 +36,9 @@ namespace instacult
       services.AddScoped<AccountsRepository>();
       services.AddScoped<AccountService>();
       services.AddTransient<CultsRepository>();
+      services.AddTransient<CultMembersRepository>();
       services.AddTransient<CultsService>();
+      services.AddTransient<CultMembersService>();
     }
 
     private void ConfigureCors(IServiceCollection services)
@@ -45,14 +47,14 @@ namespace instacult
       {
         options.AddPolicy("CorsDevPolicy", builder =>
               {
-            builder
-                  .AllowAnyMethod()
-                  .AllowAnyHeader()
-                  .AllowCredentials()
-                  .WithOrigins(new string[]{
+                builder
+                      .AllowAnyMethod()
+                      .AllowAnyHeader()
+                      .AllowCredentials()
+                      .WithOrigins(new string[]{
                         "http://localhost:8080", "http://localhost:8081"
+                  });
               });
-          });
       });
     }
 

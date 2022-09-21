@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS accounts(
   picture varchar(255) COMMENT 'User Picture'
 ) default charset utf8 COMMENT '';
 
-
+-- STUB CULTS
 CREATE TABLE IF NOT EXISTS cults(
   id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
   createdAt DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Time Created',
@@ -20,6 +20,9 @@ CREATE TABLE IF NOT EXISTS cults(
 
   FOREIGN KEY (leaderId) REFERENCES accounts(id)
 ) default charset utf8 COMMENT '';
+
+ALTER TABLE cults
+ADD COLUMN memberCount INT NOT NULL DEFAULT 0;
 
 INSERT INTO cults
 (name, fee, coverImg, leaderId, description)
@@ -44,3 +47,51 @@ JOIN accounts a ON a.id = c.leaderId;
             a.*
         FROM cults c
         JOIN accounts a ON a.id = c.leaderId;
+
+-- STUB CULT MEMBERS
+CREATE TABLE IF NOT EXISTS cultMembers(
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  cultId INT NOT NULL,
+  accountId VARCHAR(255),
+
+  FOREIGN KEY (cultId) REFERENCES cults(id) ON DELETE CASCADE,
+  FOREIGN KEY (accountId) REFERENCES accounts(id) ON DELETE CASCADE
+) default charset utf8 COMMENT '';
+
+
+
+
+-- DROP TABLE `cultMembers`;
+INSERT INTO `cultMembers`
+(cultId, accountId)
+VALUES
+(1, '6216b36ebc31a249987812b1');
+
+SELECT
+c.name,
+member.name AS memberName,
+leader.name AS leaderName
+FROM cultMembers cm
+JOIN cults c ON c.id = cm.cultId
+JOIN accounts AS member  ON member.id = cm.accountId
+JOIN accounts AS leader  ON c.leaderId = leader.id;
+
+SELECT 
+  a.*,
+  cm.*
+FROM cultMembers cm
+JOIN accounts a ON a.id = cm.accountId
+WHERE cm.cultId = 1;
+
+
+-- FIXT ME for whatever reason these don't run right
+-- CREATE TRIGGER subtractMemberCount 
+-- BEFORE DELETE on cultMembers FOR EACH ROW
+-- UPDATE cults c SET
+--   c.memberCount = c.memberCount - 1
+-- WHERE c.id = OLD.cultId;
+-- CREATE TRIGGER IF NOT EXISTS addMemberCount 
+-- AFTER INSERT on cultMembers FOR EACH ROW
+-- UPDATE cults c SET
+--   c.memberCount = c.memberCount + 1
+-- WHERE c.id = NEW.cultId;

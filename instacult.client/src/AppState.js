@@ -7,5 +7,7 @@ export const AppState = reactive({
   account: {},
 
   cults: [],
-  activeCult: {}
+  activeCult: {},
+
+  cultists: []
 })
