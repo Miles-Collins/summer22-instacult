@@ -1,6 +1,6 @@
 namespace instacult.Models
 {
-  public class RepoItem<T>
+  public abstract class RepoItem<T>
   {
     public T Id { get; set; }
     public string CreatedAt { get; set; }

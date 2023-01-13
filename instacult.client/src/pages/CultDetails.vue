@@ -5,7 +5,7 @@
         <img class="leader-img" :src="cult.leader.picture" alt="">
       </div>
       <div class="col-12 text-light text-shadow">
-        <h1>{{cult.name}}</h1>
+        <h1>{{ cult.name }}</h1>
       </div>
       <CultForm :cultData="cult" v-if="isLeader">
         <template #button>
@@ -17,7 +17,7 @@
     </div>
     <section class="row justify-content-center py-3">
       <div class="col-md-8 text-light">
-        <p>{{cult.description}}</p>
+        <p>{{ cult.description }}</p>
       </div>
     </section>
     <section class="row">
@@ -79,6 +79,7 @@ export default {
       cultists: computed(() => AppState.cultists),
       isLeader: computed(() => AppState.activeCult?.leaderId == AppState.account?.id),
       background: computed(() => `url(${AppState.activeCult.coverImg})`),
+
       async joinCult() {
         try {
           let newCultist = { cultId: route.params.id }
